@@ -13,9 +13,11 @@
 		27429BDF1D825AB400A58015 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27429BDD1D825AB400A58015 /* Main.storyboard */; };
 		27429BE11D825AB400A58015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27429BE01D825AB400A58015 /* Assets.xcassets */; };
 		27429BE41D825AB400A58015 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27429BE21D825AB400A58015 /* LaunchScreen.storyboard */; };
+		9A2B91BE6020D5EEA587BB96 /* Pods_aspop_transition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51354E73C0028D11EA1EEDAF /* Pods_aspop_transition.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		053BBA60D68136DE426F7F3E /* Pods-aspop_transition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aspop_transition.debug.xcconfig"; path = "Pods/Target Support Files/Pods-aspop_transition/Pods-aspop_transition.debug.xcconfig"; sourceTree = "<group>"; };
 		27429BD11D825AB400A58015 /* aspop_transition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aspop_transition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27429BD51D825AB400A58015 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		27429BD71D825AB400A58015 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +28,8 @@
 		27429BE01D825AB400A58015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27429BE31D825AB400A58015 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		27429BE51D825AB400A58015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51354E73C0028D11EA1EEDAF /* Pods_aspop_transition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_aspop_transition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC2E65DF887FCC6251EF7E53 /* Pods-aspop_transition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aspop_transition.release.xcconfig"; path = "Pods/Target Support Files/Pods-aspop_transition/Pods-aspop_transition.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A2B91BE6020D5EEA587BB96 /* Pods_aspop_transition.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +49,8 @@
 			children = (
 				27429BD31D825AB400A58015 /* aspop_transition */,
 				27429BD21D825AB400A58015 /* Products */,
+				D4D66059A04D75FD1D0DDB1C /* Pods */,
+				F5CF657ADBA0B5E39FAC5526 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,6 +86,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D4D66059A04D75FD1D0DDB1C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				053BBA60D68136DE426F7F3E /* Pods-aspop_transition.debug.xcconfig */,
+				CC2E65DF887FCC6251EF7E53 /* Pods-aspop_transition.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F5CF657ADBA0B5E39FAC5526 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				51354E73C0028D11EA1EEDAF /* Pods_aspop_transition.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,9 +110,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27429BE81D825AB400A58015 /* Build configuration list for PBXNativeTarget "aspop_transition" */;
 			buildPhases = (
+				653E6498901BEDF0A7DDDB85 /* [CP] Check Pods Manifest.lock */,
 				27429BCD1D825AB400A58015 /* Sources */,
 				27429BCE1D825AB400A58015 /* Frameworks */,
 				27429BCF1D825AB400A58015 /* Resources */,
+				7561DCF3ED0CDB5ACB769942 /* [CP] Embed Pods Frameworks */,
+				ED041F075C4DFBE067D424B8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -143,6 +170,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		653E6498901BEDF0A7DDDB85 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7561DCF3ED0CDB5ACB769942 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-aspop_transition/Pods-aspop_transition-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED041F075C4DFBE067D424B8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-aspop_transition/Pods-aspop_transition-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		27429BCD1D825AB400A58015 /* Sources */ = {
@@ -261,6 +336,7 @@
 		};
 		27429BE91D825AB400A58015 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 053BBA60D68136DE426F7F3E /* Pods-aspop_transition.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = aspop_transition/Info.plist;
@@ -272,6 +348,7 @@
 		};
 		27429BEA1D825AB400A58015 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC2E65DF887FCC6251EF7E53 /* Pods-aspop_transition.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = aspop_transition/Info.plist;
@@ -300,6 +377,7 @@
 				27429BEA1D825AB400A58015 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
