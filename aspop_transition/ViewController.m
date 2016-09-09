@@ -1,25 +1,39 @@
 //
 //  ViewController.m
-//  aspop_transition
+//  Sample
 //
-//  Created by xin li on 9/9/16.
-//  Copyright © 2016 lxtap. All rights reserved.
+//  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
+//  This source code is licensed under the BSD-style license found in the
+//  LICENSE file in the root directory of this source tree. An additional grant
+//  of patent rights can be found in the PATENTS file in the same directory.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+//  FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+//  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+//  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 #import "ViewController.h"
+
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
 #import <pop/POP.h>
 
-@interface TransitionNode : ASDisplayNode
+#pragma mark - TransitionNode
 
+@interface TransitionNode : ASDisplayNode
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) ASButtonNode *buttonNode;
-@property (nonatomic, strong) ASTextNode *textNodeOne;
-@property (nonatomic, strong) ASTextNode *textNodeTwo;
-
+@property (nonatomic, strong) ASDisplayNode *colorNode;
+@property (nonatomic, strong) ASDisplayNode *flyNode;
 @end
 
 @implementation TransitionNode
+
+
+#pragma mark - Lifecycle
+
 - (instancetype)init
 {
     self = [super init];
@@ -32,12 +46,11 @@
     
     _enabled = NO;
     
-    // Setup text nodes
-    _textNodeOne = [[ASTextNode alloc] init];
-    _textNodeOne.attributedText = [[NSAttributedString  alloc] initWithString:@"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"];
+    _colorNode = [ASDisplayNode new];
+    _colorNode.backgroundColor = [UIColor blackColor];
     
-    _textNodeTwo = [[ASTextNode alloc] init];
-    _textNodeTwo.attributedText = [[NSAttributedString  alloc] initWithString:@"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."];
+    _flyNode = [ASDisplayNode new];
+    _flyNode.backgroundColor = [UIColor orangeColor];
     
     // Setup button
     NSString *buttonTitle = @"Start Layout Transition";
@@ -51,13 +64,6 @@
     //       if the button is involved in the layout transition it would break the transition as it does a layout pass
     //       while changing the title. This needs and will be fixed in the future!
     [_buttonNode setTitle:buttonTitle withFont:buttonFont withColor:buttonColor forState:ASControlStateHighlighted];
-    
-    
-    // Some debug colors
-    _textNodeOne.backgroundColor = [UIColor orangeColor];
-    _textNodeTwo.backgroundColor = [UIColor greenColor];
-    
-    
     return self;
 }
 
@@ -74,6 +80,7 @@
 {
     self.enabled = !self.enabled;
     
+    NSLog(@"taptap");
     [self transitionLayoutWithAnimation:YES shouldMeasureAsync:NO measurementCompletion:nil];
 }
 
@@ -82,12 +89,10 @@
 
 - (ASLayoutSpec *)layoutSpecThatFits:(ASSizeRange)constrainedSize
 {
-    ASTextNode *nextTextNode = self.enabled ? self.textNodeTwo : self.textNodeOne;
-    nextTextNode.flexGrow = YES;
-    nextTextNode.flexShrink = YES;
-    
+    _colorNode.preferredFrameSize = CGSizeMake(60, 60);
+    _flyNode.preferredFrameSize = CGSizeMake(60, 60);
     ASStackLayoutSpec *horizontalStackLayout = [ASStackLayoutSpec horizontalStackLayoutSpec];
-    horizontalStackLayout.children = @[nextTextNode];
+    horizontalStackLayout.children = self.enabled?@[_colorNode, _flyNode]:@[_colorNode];
     
     self.buttonNode.alignSelf = ASStackLayoutAlignSelfCenter;
     
@@ -98,72 +103,43 @@
     return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(15.0, 15.0, 15.0, 15.0) child:verticalStackLayout];
 }
 
+
+//#pragma mark - Transition
+//
 - (void)animateLayoutTransition:(id<ASContextTransitioning>)context
 {
-    ASDisplayNode *fromNode = [[context removedSubnodes] objectAtIndex:0];
-    ASDisplayNode *toNode = [[context insertedSubnodes] objectAtIndex:0];
-    
-    ASButtonNode *buttonNode = nil;
-    for (ASDisplayNode *node in [context subnodesForKey:ASTransitionContextToLayoutKey]) {
-        if ([node isKindOfClass:[ASButtonNode class]]) {
-            buttonNode = (ASButtonNode *)node;
-            break;
-        }
-    }
-    
-    CGRect toNodeFrame = [context finalFrameForNode:toNode];
-    toNodeFrame.origin.x += (self.enabled ? toNodeFrame.size.width : -toNodeFrame.size.width);
-    toNode.frame = toNodeFrame;
-    //  toNode.alpha = 0.0;
-    
-    CGRect fromNodeFrame = fromNode.frame;
-    fromNodeFrame.origin.x += (self.enabled ? -fromNodeFrame.size.width : fromNodeFrame.size.width);
-    
-    // We will use the same transition duration as the default transition
-    
-    {
+    NSLog(@"piupiu");
+    if (self.enabled) {
+        CGRect finalFrame = [context finalFrameForNode:_flyNode];
+        CGRect beginFrame = finalFrame;
+        beginFrame.origin.x += 200;
+        _flyNode.frame = beginFrame;
         POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
-        anim.toValue = [NSValue valueWithCGRect:[context finalFrameForNode:toNode]];
-        [anim setCompletionBlock:^(POPAnimation *a, BOOL finished) {
-            NSLog(@"finished");
+        anim.toValue = [NSValue valueWithCGRect:finalFrame];
+        [anim setCompletionBlock:^(POPAnimation *_, BOOL finished) {
+            NSLog(@"complete");
             [context completeTransition:finished];
         }];
-        [toNode.layer pop_addAnimation:anim forKey:@"moveOut"];
-    }
-    {
+        [_flyNode.layer pop_addAnimation:anim forKey:@"moveIn"];
+    } else {
+        CGRect beginFrame = [context initialFrameForNode:_flyNode];
+        CGRect finalFrame = beginFrame;
+        finalFrame.origin.x += 400;
+        _flyNode.frame = beginFrame;
         POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
-        anim.toValue = [NSValue valueWithCGRect:fromNodeFrame];
-        //    [anim setCompletionBlock:^(POPAnimation *a, BOOL finished) {
-        //      NSLog(@"finished");
-        //      [context completeTransition:finished];
-        //    }];
-        [fromNode.layer pop_addAnimation:anim forKey:@"moveOut"];
+        anim.toValue = [NSValue valueWithCGRect:finalFrame];
+        [anim setCompletionBlock:^(POPAnimation *_, BOOL finished) {
+            NSLog(@"complete");
+            [context completeTransition:finished];
+        }];
+        [_flyNode.layer pop_addAnimation:anim forKey:@"moveOut"];
     }
-    
-    //  [UIView animateWithDuration:self.defaultLayoutTransitionDuration animations:^{
-    ////    toNode.frame = [context finalFrameForNode:toNode];
-    //    toNode.alpha = 1.0;
-    //
-    //    fromNode.frame = fromNodeFrame;
-    //    fromNode.alpha = 0.0;
-    //
-    //    // Update frame of self
-    //    CGSize fromSize = [context layoutForKey:ASTransitionContextFromLayoutKey].size;
-    //    CGSize toSize = [context layoutForKey:ASTransitionContextToLayoutKey].size;
-    //    BOOL isResized = (CGSizeEqualToSize(fromSize, toSize) == NO);
-    //    if (isResized == YES) {
-    //      CGPoint position = self.frame.origin;
-    //      self.frame = CGRectMake(position.x, position.y, toSize.width, toSize.height);
-    //    }
-    //    
-    //    buttonNode.frame = [context finalFrameForNode:buttonNode];
-    //  } completion:^(BOOL finished) {
-    //    [context completeTransition:finished];
-    //  }];
 }
 
 @end
 
+
+#pragma mark - ViewController
 
 @interface ViewController ()
 @property (nonatomic, strong) TransitionNode *transitionNode;
@@ -171,8 +147,12 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+#pragma mark - UIViewController
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    
     _transitionNode = [TransitionNode new];
     [self.view addSubnode:_transitionNode];
     
@@ -188,9 +168,5 @@
     self.transitionNode.frame = CGRectMake(0, 20, size.width, size.height);
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end
+
